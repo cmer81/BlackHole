@@ -9,6 +9,7 @@ ATTRIBUTE User-Name     1 string
 ATTRIBUTE User-Password 2 string encrypt=1
 """
 
+
 class AuthRadius(object):
     """
     Authenticate against a backend RADIUS server; return User object or None.
@@ -84,7 +85,7 @@ class AuthRadius(object):
 #            user.save()
             user = None
         return user
-            
+
     def get_user(self, user_id):
         try:
             return User.objects.get(pk=user_id)

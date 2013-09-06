@@ -1,6 +1,7 @@
 # Django settings for BastionSSH project.
 import os
-import base64
+
+
 os.environ["LANG"] = "en_US.UTF-8"
 os.environ["LC_ALL"] = "en_US.UTF-8"
 
@@ -8,7 +9,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-     ('Nicolas Rebagliati', 'nicolas.rebagliati@aenima-x.com.ar'),
+    ('Nicolas Rebagliati', 'nicolas.rebagliati@aenima-x.com.ar'),
 )
 
 MANAGERS = ADMINS

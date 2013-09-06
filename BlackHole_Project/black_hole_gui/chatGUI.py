@@ -1,8 +1,3 @@
-'''
-Created on Oct 24, 2012
-
-@author: Nicolas Rebagliati (nicolas.rebagliati@aenima-x.com.ar)
-'''
 # -*- coding: utf-8 -*-
 
 import os
@@ -112,7 +107,7 @@ class chatGUI(object):
             ("div_fg_", "dark cyan"),
             ("", "default")):
         for name, color in (
-                ("red","dark red"),
+                ("red", "dark red"),
                 ("blue", "dark blue"),
                 ("green", "dark green"),
                 ("yellow", "yellow"),
@@ -120,7 +115,7 @@ class chatGUI(object):
                 ("gray", "light gray"),
                 ("white", "white"),
                 ("black", "black")):
-            _palette.append( (type + name, color, bg) )
+            _palette.append((type + name, color, bg))
 
 
     def __init__(self, user):
@@ -170,12 +165,10 @@ class chatGUI(object):
             self.keypress(self.size, key)
 
         self.size = self.ui.get_cols_rows()
-        self.main_loop = urwid.MainLoop(
-                                        self.context,
+        self.main_loop = urwid.MainLoop(self.context,
                                         screen=self.ui,
                                         handle_mouse=False,
-                                        unhandled_input=input_cb,
-                                        )
+                                        unhandled_input=input_cb,)
 
         def call_redraw(*x):
             self.draw_interface()
@@ -183,7 +176,8 @@ class chatGUI(object):
             return True
         
         inv = urwid.canvas.CanvasCache.invalidate
-        def invalidate (cls, *a, **k):
+        #TODO Verificar la identacion de esto
+        def invalidate(cls, *a, **k):
             inv(*a, **k)
             if not invalidate.locked:
                 invalidate.locked = True
@@ -221,11 +215,9 @@ class chatGUI(object):
         self.divider = urwid.AttrWrap(self.divider, "divider")
         self.body = urwid.AttrWrap(self.body, "body")
         self.footer.set_wrap_mode("space")
-        main_frame = urwid.Frame(self.body, 
-                                header=self.header,
-                                footer=self.divider)        
+        main_frame = urwid.Frame(self.body, header=self.header, footer=self.divider)
         self.context = urwid.Frame(main_frame, footer=self.footer)
-        self.divider.set_text(("divider",(_("Send Message:  Press [ESC] to quit."))))
+        self.divider.set_text(("divider", (_("Send Message:  Press [ESC] to quit."))))
         self.context.set_focus("footer")
 
     def draw_interface(self):
@@ -302,7 +294,8 @@ class chatGUI(object):
             Return formated current datetime
         """
         return datetime.now().strftime('%H:%M:%S')
-        
+
+
 #Exceptions
 class AlreadyLogged(Exception):
     def __init__(self):
@@ -310,7 +303,9 @@ class AlreadyLogged(Exception):
          
 class FailedServerConnection(Exception):
     def __init__(self):
-        self.message = _("Cant connect to Chat server.")      
+        self.message = _("Cant connect to Chat server.")
+
+
 #Client
 class ChatClient(threading.Thread):
     def __init__(self,chatGui,connection):
@@ -338,4 +333,3 @@ class ChatClient(threading.Thread):
         while not self.stopIt:
             message = self.recieveMessage()
             self.chatGui.print_received_message(message)
-            

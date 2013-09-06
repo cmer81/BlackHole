@@ -6,7 +6,9 @@ PORT = 5006
 NAME = 'ChatLine'
 NUMBER_OF_CONNECTIONS = 2
 
-if __name__ =='__main__':
-    s = ChatServer(PORT, NAME,NUMBER_OF_CONNECTIONS)
-    try: asyncore.loop()    
-    except KeyboardInterrupt: print
+if __name__ == '__main__':
+    s = ChatServer(PORT, NAME, NUMBER_OF_CONNECTIONS)
+    try:
+        asyncore.loop()
+    except KeyboardInterrupt:
+        pass

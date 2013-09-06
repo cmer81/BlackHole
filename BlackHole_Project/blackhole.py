@@ -3,14 +3,14 @@ import warnings
 warnings.simplefilter("ignore")
 import os
 import sys
-from  black_hole_gui.blackHole import BlackHole
-from black_hole_gui.cursesGui import CursesMessage
+from black_hole_engine import BlackHole
+from black_hole_engine.gui import CursesMessage
 
 
 def main():
     print("Loading...")
     try:
-        SETTINGS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)),'blackhole.config')
+        SETTINGS_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'blackhole.config')
         blackHole = BlackHole(SETTINGS_FILE)
         blackHole.main()
     except KeyboardInterrupt:

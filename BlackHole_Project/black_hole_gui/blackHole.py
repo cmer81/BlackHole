@@ -1,11 +1,5 @@
-'''
-Created on Oct 24, 2012
-
-@author: Nicolas Rebagliati (nicolas.rebagliati@aenima-x.com.ar)
-'''
 # -*- coding: utf-8 -*-
 import os
-import sys
 import getpass
 import socket
 from loger import Loger
@@ -17,13 +11,14 @@ from datetime import datetime
 import paramiko
 from _mysql_exceptions import OperationalError 
 from blackHoleExceptions import UserDisabledTime, UnknownUser, UserDisabled, ErroLoadingData, MysqlException, FileMissing
-import cursesGui
+import gui
 import black_hole.settings
 setup_environ(black_hole.settings)
 from black_hole_db.models import User, PrivateKey, SessionLog
 from tokenValidationWindow import TokenValidationWindow
 from loger import Loger
 import language
+
 
 class Settings(object):
     def __init__(self, configParserObject):
@@ -37,6 +32,7 @@ class Settings(object):
             raise ErroLoadingData('Path %s does not exists' % self.application_path)
         if not os.path.isdir(self.log_path):
             raise ErroLoadingData('Path %s does not exists' % self.log_path)
+
 
 class Data(object):
     def __init__(self):
@@ -56,35 +52,41 @@ class Data(object):
             self.clientPort = 0
         self.sessionID = random.randrange(100000, 999999, 1)
 
+
 class BlackHole(object):
     """The main class of the application"""
+    instance = None
+
     def __init__(self, SETTINGS_FILE):
-        """
-        Creates an instance of BlackHole
-        Arguments:
-        SETTINGS_FILE: Path of the settings File
-        """
-        self.settings = None
-        self.data = None
-        self.information = None
-        try:
-            self._loadData(SETTINGS_FILE)
-            Loger.write(self)  
-            if self.data.user.enable:
-                if self.data.user.timeEnabled:
-                    now = datetime.now().time().replace(second=0)
-                    if not (self.data.user.timeFrom < now < self.data.user.timeTo):
-                        raise UserDisabledTime(self.data.user)
-                self.data.user.lastLogin = datetime.now()
-                self.data.user.save()
-            else:
-                raise UserDisabled(self.data.user)       
-            self.blackHoleBrowser = cursesGui.BlackHoleBrowser(self)
-        except OperationalError as e:
-            raise MysqlException(e)
-        except Exception as e:
-            raise e
-    
+        if not BlackHole.instance:
+            """
+            Creates an instance of BlackHole
+            Arguments:
+            SETTINGS_FILE: Path of the settings File
+            """
+            self.settings = None
+            self.data = None
+            #TODO Borrar information
+            #self.information = None
+            try:
+                self._loadData(SETTINGS_FILE)
+                Loger.write(self)
+                if self.data.user.enable:
+                    if self.data.user.timeEnabled:
+                        now = datetime.now().time().replace(second=0)
+                        if not (self.data.user.timeFrom < now < self.data.user.timeTo):
+                            raise UserDisabledTime(self.data.user)
+                    self.data.user.lastLogin = datetime.now()
+                    self.data.user.save()
+                else:
+                    raise UserDisabled(self.data.user)
+                self.blackHoleBrowser = gui.BlackHoleBrowser(self)
+                BlackHole.instance = self
+            except OperationalError as e:
+                raise MysqlException(e)
+            except Exception as e:
+                raise e
+
     def main(self):
         """
         Main method, it runs the app.
@@ -93,7 +95,7 @@ class BlackHole(object):
         if self.settings.token_validation_enabled:
             #Check if the user needs to be verified by token
             if self.data.user.generateToken:
-                w = TokenValidationWindow(self.data,self.settings)
+                w = TokenValidationWindow(self.data, self.settings)
                 w.main()
         #Start the browser
         self.blackHoleBrowser.main()
@@ -115,8 +117,10 @@ class BlackHole(object):
             raise e
     
     def __str__(self):
-        return("[auth] user=%s sessionID=%s from=%s:%s" % (self.data.user.userName, self.data.sessionID, self.data.sourceIP, self.data.clientPort))
-    
+        return "[auth] user=%s sessionID=%s from=%s:%s" % \
+               (self.data.user.userName, self.data.sessionID, self.data.sourceIP, self.data.clientPort)
+
+    # TODO esta bien que esto sea una responsabilidad de la clase BlackHole??
     def getPrivateKey(self, user, environment):
         try:
             pk = PrivateKey.objects.get(user=user, environment=environment)
@@ -131,23 +135,22 @@ class BlackHole(object):
             return key
         except exceptions.ObjectDoesNotExist as e:
             return False
-        
-    def writeSessionLog(self, host, userIdentity, loginDate, logoutDate, sessionDuration, usage, keyCount, logFile):
+
+    def writeSessionLog(self, host, userIdentity, loginDate, logoutDate, sessionDuration, logFile):
         try:
             blackholeServer = socket.gethostname()
             sessionLog = SessionLog(user=self.data.user,
-                                       host=host,
-                                       userIdentity=userIdentity,
-                                       sourceIP=self.data.sourceIP,
-                                       loginDate=loginDate,
-                                       logoutDate=logoutDate,
-                                       sessionID=self.data.sessionID,
-                                       sessionDuration=sessionDuration,
-                                       usage = usage,
-                                       keyCount = keyCount,
-                                       blackholeServer = blackholeServer,
-                                       logFile = logFile)
+                                    host=host,
+                                    userIdentity=userIdentity,
+                                    sourceIP=self.data.sourceIP,
+                                    loginDate=loginDate,
+                                    logoutDate=logoutDate,
+                                    sessionID=self.data.sessionID,
+                                    sessionDuration=sessionDuration,
+                                    blackholeServer=blackholeServer,
+                                    logFile=logFile)
             sessionLog.save()
         except Exception as e:
-            Loger.writeError("!!%s [%s]" % (self.data.user.userName,e))
-        
+            Loger.writeError("!!%s [%s]" % (self.data.user.userName, e))
+
+

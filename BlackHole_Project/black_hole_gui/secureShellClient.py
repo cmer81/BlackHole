@@ -1,8 +1,3 @@
-'''
-Created on Oct 24, 2012
-
-@author: Nicolas Rebagliati (nicolas.rebagliati@aenima-x.com.ar)
-'''
 # -*- coding: utf-8 -*-
 import paramiko
 import termios
@@ -14,15 +9,16 @@ import select
 import socket
 import sys
 import stat
-import cursesGui
+import gui
 import signal
 from datetime import datetime
 from loger import Loger
 
+
 class SecureShellClient(object):
-    '''
+    """
     classdocs
-    '''
+    """
     def __init__(self, blackHole, widget, size):
         """
         * blackHole: blackHole object
@@ -63,11 +59,15 @@ class SecureShellClient(object):
                     t.start_client()
                     try:
                         t.auth_publickey(self.userConnection, self.widget.pk)
-                        Loger.write("[login] user=%s to=%s as=%s sessionID=%s" % (self.blackHole.data.user.userName, self.hostConnection.host.name, self.userConnection, self.blackHole.data.sessionID))
+                        Loger.write("[login] user=%s to=%s as=%s sessionID=%s" % (self.blackHole.data.user.userName,
+                                                                                  self.hostConnection.host.name,
+                                                                                  self.userConnection,
+                                                                                  self.blackHole.data.sessionID))
                     except paramiko.SSHException as e:
                         t.close()
                         sock.close()
-                        Loger.writeError("%s [%s] %s " % (self.blackHole.data.user.userName, self.hostConnection.host.name, e.message))
+                        Loger.writeError("%s [%s] %s " % (self.blackHole.data.user.userName,
+                                                          self.hostConnection.host.name, e.message))
                         raise Exception(e)  
                     chan = t.open_session()
                     cols, rows = size
@@ -96,7 +96,10 @@ class SecureShellClient(object):
             self.sessionStopDate = datetime.now()
             sessionDuration = round((self.sessionStopDate - self.sessionStartDate).total_seconds() / 60, 3)
             usage = "%s/%s" % (self.enterCount, sessionDuration)
-            Loger.write("[logout] user=%s to=%s as=%s sessionID=%s usage=%s" % (self.blackHole.data.user.userName, self.hostConnection.host.name, self.userConnection, self.blackHole.data.sessionID, usage))
+            Loger.write("[logout] user=%s to=%s as=%s sessionID=%s usage=%s" % (self.blackHole.data.user.userName,
+                                                                                self.hostConnection.host.name,
+                                                                                self.userConnection,
+                                                                                self.blackHole.data.sessionID, usage))
             self.blackHole.writeSessionLog(self.hostConnection.host,
                                            self.hostConnection.userAuthentication,
                                            self.sessionStartDate,
@@ -123,7 +126,8 @@ class SecureShellClient(object):
                                                             self.blackHole.data.sessionID,
                                                             self.sessionStartDate.strftime("%Y%m%d_%H%M%S"))
                 else:
-                    Loger.writeError("[ERROR] Log Path don't Exists: %s" % os.path.join(self.blackHole.settings.log_path, self.blackHole.data.user.profile.name))
+                    Loger.writeError("[ERROR] Log Path don't Exists: %s" % os.path.join(self.blackHole.settings.log_path,
+                                                                                        self.blackHole.data.user.profile.name))
                     logFile = "%s/%s-%s-%s-%i_%s.log" % (self.blackHole.settings.log_path,
                                                          self.blackHole.data.user.userName,
                                                          self.userConnection,

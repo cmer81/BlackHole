@@ -1,18 +1,13 @@
 #!/usr/bin/python
-'''
-Created on Oct 24, 2012
-
-@author: Nicolas Rebagliati (nicolas.rebagliati@aenima-x.com.ar)
-'''
 # -*- coding: utf-8 -*-
-
 from asyncore import dispatcher
 from asynchat import async_chat
 import socket, asyncore
 import language
 
+
 class ChatSession(async_chat):
-    def __init__(self,server,sock,user="Unknown"):
+    def __init__(self,server, sock, user="Unknown"):
         async_chat.__init__(self, sock)
         self.server = server
         self.set_terminator("\n")
@@ -31,12 +26,13 @@ class ChatSession(async_chat):
         async_chat.handle_close(self)
         self.server.disconnect(self)
 
+
 class ChatServer(dispatcher):
     def __init__(self, port, name, numberOfConnections):
         dispatcher.__init__(self)
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
         self.set_reuse_addr()
-        self.bind(("",port))
+        self.bind(("", port))
         self.listen(numberOfConnections)
         self.name = name
         self.sessions = []

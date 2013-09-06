@@ -1,9 +1,9 @@
-# Create your views here.
+# -*- coding: utf-8 -*-
 import os
-import os, tempfile, zipfile
+import tempfile
+import zipfile
 from datetime import timedelta
 from django.shortcuts import render_to_response
-from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
 from django.contrib.auth.decorators import login_required
@@ -22,9 +22,11 @@ import qsstats
 def index(request):
     return render_to_response('blackhole/index.html', context_instance=RequestContext(request))
 
+
 @login_required
 def stats(request):
     pass
+
 
 @login_required
 def listUsers(request):
@@ -39,8 +41,9 @@ def listUsers(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         users = paginator.page(paginator.num_pages)
-    return render_to_response('blackhole/listUsers.html', {'users':users}, context_instance=RequestContext(request))
-    
+    return render_to_response('blackhole/listUsers.html', {'users': users}, context_instance=RequestContext(request))
+
+
 @login_required
 def listHosts(request):
     hosts_list = Host.objects.order_by('name')
@@ -54,7 +57,7 @@ def listHosts(request):
     except EmptyPage:
         # If page is out of range (e.g. 9999), deliver last page of results.
         hosts = paginator.page(paginator.num_pages)
-    return render_to_response('blackhole/listHosts.html', {'hosts':hosts}, context_instance=RequestContext(request))
+    return render_to_response('blackhole/listHosts.html', {'hosts': hosts}, context_instance=RequestContext(request))
 
 
 @login_required
@@ -83,7 +86,7 @@ def findSessionLog(request):
             user = form.cleaned_data.get('user')
             from_date = form.cleaned_data.get('from_date')
             to_date = form.cleaned_data.get('to_date')
-            info = {'user':user, 'from':from_date, 'to':to_date}
+            info = {'user': user, 'from': from_date, 'to': to_date}
             days = timedelta(days=1)
             logs = SessionLog.objects.filter(loginDate__range=(from_date, to_date + days), user=user)
             for log in logs:
@@ -94,11 +97,14 @@ def findSessionLog(request):
                         log.canDownload = False
                 else:
                     log.canDownload = False
-            return render_to_response('blackhole/findSessionLog.html', {'info':info, 'logs':logs}, context_instance=RequestContext(request))
+            return render_to_response('blackhole/findSessionLog.html', {'info': info, 'logs': logs},
+                                      context_instance=RequestContext(request))
     else:
         form = FindSessionLogs()
-    return render_to_response('blackhole/findSessionLog.html', {'form':form}, context_instance=RequestContext(request))
-    
+    return render_to_response('blackhole/findSessionLog.html', {'form': form},
+                              context_instance=RequestContext(request))
+
+
 # Stats Views
 @login_required
 def byUser(request):
@@ -110,10 +116,12 @@ def byUser(request):
             from_date = form.cleaned_data.get('from_date')
             to_date = form.cleaned_data.get('to_date') + oneDayAhead
             statsType = form.cleaned_data.get('statsType')
-            info = {'user':user, 'from':from_date, 'to':to_date}
+            info = {'user': user, 'from': from_date, 'to': to_date}
             if statsType == 'SOURCE':
-                data = SessionLog.objects.filter(loginDate__range=(from_date, to_date), user=user).values('sourceIP').annotate(total=Count('user'))
-                return render_to_response('blackhole/statsSource.html', {'data': data, 'info':info}, context_instance=RequestContext(request))
+                data = SessionLog.objects.filter(loginDate__range=(from_date, to_date),
+                                                 user=user).values('sourceIP').annotate(total=Count('user'))
+                return render_to_response('blackhole/statsSource.html', {'data': data, 'info': info},
+                                          context_instance=RequestContext(request))
             elif statsType == 'LOGINS_COUNT':
                 logins = SessionLog.objects.filter(loginDate__range=(from_date, to_date), user=user)
                 qss = qsstats.QuerySetStats(logins, 'loginDate')
@@ -122,7 +130,8 @@ def byUser(request):
                 for date, value in time_series:
                     logsData.append((int(date.strftime("%s")) * 1000, value))
                 data = simplejson.dumps(logsData)
-                return render_to_response('blackhole/statsLogins.html', {'data': data, 'info':info}, context_instance=RequestContext(request))
+                return render_to_response('blackhole/statsLogins.html', {'data': data, 'info': info},
+                                          context_instance=RequestContext(request))
             elif statsType == 'SESSION_DURATION':
                 logins = SessionLog.objects.filter(loginDate__range=(from_date, to_date), user=user)
                 qss = qsstats.QuerySetStats(logins, 'loginDate', Sum('sessionDuration'))
@@ -131,7 +140,8 @@ def byUser(request):
                 for date, value in time_series:
                     logsData.append((int(date.strftime("%s")) * 1000, value))
                 data = simplejson.dumps(logsData)
-                return render_to_response('blackhole/statsSessionDuration.html', {'data': data, 'info':info}, context_instance=RequestContext(request))
+                return render_to_response('blackhole/statsSessionDuration.html', {'data': data, 'info': info},
+                                          context_instance=RequestContext(request))
             elif statsType == 'KEY_COUNT':
                 logins = SessionLog.objects.filter(loginDate__range=(from_date, to_date), user=user)
                 qss = qsstats.QuerySetStats(logins, 'loginDate', Sum('keyCount'))
@@ -152,7 +162,7 @@ def byUser(request):
                 return render_to_response('blackhole/statsUsage.html', {'data': data, 'info':info}, context_instance=RequestContext(request))
     else:
         form = StatsByUser()
-    return render_to_response('blackhole/byUser.html', {'form':form}, context_instance=RequestContext(request))
+    return render_to_response('blackhole/byUser.html', {'form': form}, context_instance=RequestContext(request))
 
 @login_required
 def byHost(request):
@@ -164,48 +174,51 @@ def byHost(request):
             from_date = form.cleaned_data.get('from_date')
             to_date = form.cleaned_data.get('to_date') + oneDayAhead
             statsType = form.cleaned_data.get('statsType')
-            info = {'host':host,'from':from_date,'to':to_date}
+            info = {'host': host, 'from': from_date,'to': to_date}
             if statsType == 'USERS':
                 data =  SessionLog.objects.filter(loginDate__range=(from_date,to_date),host=host).values('user').annotate(total=Count('user'))
-                return render_to_response('blackhole/statsHostUsers.html',{'data': data,'info':info}, context_instance=RequestContext(request))
+                return render_to_response('blackhole/statsHostUsers.html',{'data': data,'info': info},
+                                          context_instance=RequestContext(request))
             elif statsType == 'LOGINS_COUNT':
-                logins = SessionLog.objects.filter(loginDate__range=(from_date,to_date),host=host)
+                logins = SessionLog.objects.filter(loginDate__range=(from_date, to_date), host=host)
                 qss = qsstats.QuerySetStats(logins, 'loginDate')
                 time_series = qss.time_series(from_date, to_date)
                 logsData = []
                 for date,value in time_series:
-                    logsData.append((int(date.strftime("%s")) * 1000,value))
+                    logsData.append((int(date.strftime("%s")) * 1000, value))
                 data = simplejson.dumps(logsData)
-                return render_to_response('blackhole/statsHostLogins.html',{'data': data,'info':info}, context_instance=RequestContext(request))
+                return render_to_response('blackhole/statsHostLogins.html',{'data': data, 'info': info},
+                                          context_instance=RequestContext(request))
             elif statsType =='SESSION_DURATION':
                 logins = SessionLog.objects.filter(loginDate__range=(from_date,to_date),host=host)
-                qss = qsstats.QuerySetStats(logins, 'loginDate',Sum('sessionDuration'))
+                qss = qsstats.QuerySetStats(logins, 'loginDate', Sum('sessionDuration'))
                 time_series = qss.time_series(from_date, to_date)
                 logsData = []
                 for date,value in time_series:
                     logsData.append((int(date.strftime("%s")) * 1000,value))
                 data = simplejson.dumps(logsData)
-                return render_to_response('blackhole/statsHostSessionDuration.html',{'data': data,'info':info}, context_instance=RequestContext(request))
+                return render_to_response('blackhole/statsHostSessionDuration.html', {'data': data, 'info': info},
+                                          context_instance=RequestContext(request))
             elif statsType =='KEY_COUNT':
-                logins = SessionLog.objects.filter(loginDate__range=(from_date,to_date),host=host)
-                qss = qsstats.QuerySetStats(logins, 'loginDate',Sum('keyCount'))
+                logins = SessionLog.objects.filter(loginDate__range=(from_date, to_date), host=host)
+                qss = qsstats.QuerySetStats(logins, 'loginDate', Sum('keyCount'))
                 time_series = qss.time_series(from_date, to_date)
                 logsData = []
                 for date,value in time_series:
-                    logsData.append((int(date.strftime("%s")) * 1000,value))
+                    logsData.append((int(date.strftime("%s")) * 1000, value))
                 data = simplejson.dumps(logsData, use_decimal=True)
-                return render_to_response('blackhole/statsHostKeyCount.html',{'data': data,'info':info}, context_instance=RequestContext(request))
+                return render_to_response('blackhole/statsHostKeyCount.html', {'data': data, 'info': info},
+                                          context_instance=RequestContext(request))
             elif statsType =='USAGE':
-                logins = SessionLog.objects.filter(loginDate__range=(from_date,to_date),host=host)
-                qss = qsstats.QuerySetStats(logins, 'loginDate',Sum('usage'))
+                logins = SessionLog.objects.filter(loginDate__range=(from_date,to_date), host=host)
+                qss = qsstats.QuerySetStats(logins, 'loginDate', Sum('usage'))
                 time_series = qss.time_series(from_date, to_date)
                 logsData = []
                 for date,value in time_series:
                     logsData.append((int(date.strftime("%s")) * 1000,value))
                 data = simplejson.dumps(logsData)
-                return render_to_response('blackhole/statsHostUsage.html',{'data': data,'info':info}, context_instance=RequestContext(request))
+                return render_to_response('blackhole/statsHostUsage.html', {'data': data, 'info': info},
+                                          context_instance=RequestContext(request))
     else:
         form = StatsByHost()
-    return render_to_response('blackhole/byHost.html',{'form':form}, context_instance=RequestContext(request))
-    
-   
+    return render_to_response('blackhole/byHost.html', {'form': form}, context_instance=RequestContext(request))

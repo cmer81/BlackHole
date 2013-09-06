@@ -1,8 +1,4 @@
-'''
-Created on Oct 19, 2012
-
-@author: Nicolas Rebagliati
-'''
+# -*- coding: utf-8 -*-
 from django.conf.urls import patterns, include, url
 from django.contrib.auth import views as django_views
 

@@ -1,8 +1,3 @@
-'''
-Created on Oct 24, 2012
-
-@author: Nicolas Rebagliati (nicolas.rebagliati@aenima-x.com.ar)
-'''
 # -*- coding: utf-8 -*-
 import os
 import urwid
@@ -23,15 +18,18 @@ global _environments_cache_list
 _environments_cache = {}
 _environments_cache_list = []
 
+
 def store_initial_environment(initial, end):
     """Store the initial current working directory path components."""
     global _initial_environment, _end_environment
     _initial_environment = initial
     _end_environment = end
-   
+
+
 def get_environment(name):
     """Return the Directory object for a given path.  Create if necessary."""  
     return _environments_cache[name]
+
 
 def get_next_environment(name):    
     index = _environments_cache_list.index(name)
@@ -39,18 +37,22 @@ def get_next_environment(name):
         return _environments_cache[_environments_cache_list[index + 1]]
     return False
 
+
 def get_prev_environment(name):    
     index = _environments_cache_list.index(name)
     if index > 0:
         return _environments_cache[_environments_cache_list[index - 1]]
     return False
 
+
 def set_blackHole(blackHole):
-    global _blackHole 
-    _blackHole= blackHole
-    
+    global _blackHole
+    _blackHole = blackHole
+
+
 def get_blackHole():
     return _blackHole
+
 
 def set_cache(user, environment):
     _environments_cache[environment.name] = EnvironmentStore(user, environment)
@@ -114,6 +116,7 @@ class TreeWidget(urwid.WidgetWrap):
         """Return the previous TreeWidget depth first from this one."""
         return get_environment(self.environment).prev_inorder_from(self.index, self.name)
 
+
 class EnvironmentTree(TreeWidget):
     def __init__(self, environment, index):
         self.error = False
@@ -123,7 +126,7 @@ class EnvironmentTree(TreeWidget):
         self.expanded = False
         self.numberOfHosts = len(get_blackHole().data.user.profile.hosts.filter(host__environment=self.environmentObject))
         self.update_widget()
-        
+
     def next_inorder(self):
         if not self.expanded:
             nextEnvironment = get_next_environment(self.name)
@@ -133,11 +136,11 @@ class EnvironmentTree(TreeWidget):
                 return None
         else:
             return self.first_child()
-        
+
     def prev_inorder(self):
         prevEnvironment = get_prev_environment(self.name)
-        if  prevEnvironment:
-            if prevEnvironment.environment_w.expanded == False:
+        if prevEnvironment:
+            if not prevEnvironment.environment_w.expanded:
                 return prevEnvironment.environment_w
             else:
                 return prevEnvironment.environment_w.last_child()
@@ -148,7 +151,9 @@ class EnvironmentTree(TreeWidget):
             mark = "[-]"
         else:
             mark = "[+]"
-        self.widget.set_text(["", ('environmentMark', mark), " ", _("%(description)s Hosts: %(hostsCount)s") % {'description':self.description,'hostsCount': self.numberOfHosts}]) 
+        self.widget.set_text(["", ('environmentMark', mark), " ",
+                              _("%(description)s Hosts: %(hostsCount)s") %
+                              {'description': self.description, 'hostsCount': self.numberOfHosts}])
 
     def keypress(self, (maxcol,), key):
         """Handle expand & collapse requests."""   
@@ -169,17 +174,18 @@ class EnvironmentTree(TreeWidget):
     
     def first_child(self):
         """Return first child if expanded."""
-        if self.expanded == False:
+        if not self.expanded:
             return get_environment(self.environment).environment_w
         return get_environment(self.environment).get_first()
     
     def last_child(self):
         """Return last child if expanded."""      
-        if self.expanded == False:
+        if not self.expanded:
             return get_environment(self.environment).environment_w
         else:
             return get_environment(self.environment).get_last()
-            
+
+
 class HostTree(TreeWidget):
     def __init__(self, environment, hostConnection, index):
         self.error = False
@@ -223,7 +229,8 @@ class HostTree(TreeWidget):
             return True
         else:
             return False
-        
+
+
 class BlackHoleBrowser(object):   
     def __init__(self, blackHole):
         #Define global access for other classes, ugly!!
@@ -257,7 +264,7 @@ class BlackHoleBrowser(object):
         ('footer_msg', _("Quit:")), " ",
         ('key', "q"), "  ",
         ('footer_msg', "\nChat:"), " ",
-        ('key', "c" if self.blackHole.settings.chat_enabled else _("Disabled")  ), "  ",
+        ('key', "c" if self.blackHole.settings.chat_enabled else _("Disabled")), "  ",
         ('footer_msg', "By:"), " ",
         ('key', "%s [%s]" % (black_hole.get_author(),
                              black_hole.get_author_email())), ]               
@@ -271,10 +278,8 @@ class BlackHoleBrowser(object):
         self.header.set_align_mode('center')
         self.footer = urwid.AttrWrap(urwid.Text(self.footer_text), 'foot')
         self.footer.set_align_mode('center')
-        self.view = urwid.Frame(
-                urwid.AttrWrap(self.listbox, 'body'),
-                header=urwid.AttrWrap(self.header, 'head'),
-                footer=self.footer)        
+        self.view = urwid.Frame(urwid.AttrWrap(self.listbox, 'body'), header=urwid.AttrWrap(self.header, 'head'),
+                                footer=self.footer)
             
     def main(self):
         """
@@ -298,10 +303,10 @@ class BlackHoleBrowser(object):
             while 1:          
                 focus, _ign = self.listbox.body.get_focus()
                 self.header_text = [
-            ('footer_msg', "BlackHole (v%s)" % black_hole.get_version()) , " ",
-            ('footer_msg', _("User:")) , " ",
+            ('footer_msg', "BlackHole (v%s)" % black_hole.get_version()), " ",
+            ('footer_msg', _("User:")), " ",
             ('key', "%s" % self.user.getFullName()), " ",
-            ('footer_msg', _("- Selected:")) , " ",
+            ('footer_msg', _("- Selected:")), " ",
             ('key', "%s" % focus.description),
             ]
                 self.header.set_text(self.header_text)
@@ -386,9 +391,9 @@ class BlackHoleBrowser(object):
     def startSSH(self, widget):
         self.stopUI()
         os.system('clear')
-        print(_("Login to %(host)s [%(user)s] Date: %(date)s ........\n") % {'host':widget.hostObject.name,
-                                                                             'user':widget.hostObject.description,
-                                                                             'date':datetime.now().strftime("%Y-%m-%d %H:%M")})
+        print(_("Login to %(host)s [%(user)s] Date: %(date)s ........\n") % {'host': widget.hostObject.name,
+                                                                             'user': widget.hostObject.description,
+                                                                             'date': datetime.now().strftime("%Y-%m-%d %H:%M")})
         try:
             newClient = SecureShellClient(self.blackHole, widget, self.size)
         except KeyboardInterrupt:
@@ -397,7 +402,7 @@ class BlackHoleBrowser(object):
             widget.setError(e.message)
         finally:
             self.startUI()
-            
+
     def startUI(self):
         self.ui.start()
         self.ui.set_mouse_tracking()
@@ -406,7 +411,7 @@ class BlackHoleBrowser(object):
 
     def stopUI(self):
         self.ui.stop()
-    
+
     def startChat(self):
         try:
             chatGui = chatGUI(self.user)
@@ -414,7 +419,6 @@ class BlackHoleBrowser(object):
         except Exception as e:
             CursesMessage.msgBox(e)
 
-            
     def collapse_focus_parent(self, size):
         """Collapse parent directory."""      
         widget, pos = self.listbox.body.get_focus()
@@ -450,6 +454,7 @@ class BlackHoleBrowser(object):
         widget = amb.get_last()
         parent, name = widget.environment, widget.name
         self.listbox.change_focus(size, (parent, name), maxrow - 1)
+
 
 class EnvironmentWalker(urwid.ListWalker):
     def __init__(self, user):
@@ -502,7 +507,8 @@ class EnvironmentWalker(urwid.ListWalker):
         if target is None:
             return None, None
         return target, (target.environment, target.name)
-    
+
+
 class EnvironmentStore(object):
     """Stores the environment and its hosts as Tree widgets
     * environments: environment object"""    
@@ -510,7 +516,7 @@ class EnvironmentStore(object):
         self.environment = environment.name
         self.environmentObject = environment
         self.environment_w = EnvironmentTree(self.environmentObject, 0)       
-        self.widgets = {}   
+        self.widgets = {}
         self.items = []
         self.setHosts(user)
     
@@ -522,23 +528,25 @@ class EnvironmentStore(object):
         Tengo que pasar una lista, que contenga una lista con los equipos de cada ambiente.
         y en el index 0 el ambiente"""
         j = 0
+        #TODO Verificar esto, para poder usar mas de 1 hostconnection
         for hostConnection in user.profile.hosts.filter(host__environment=self.environmentObject).order_by('host__name'):
+            key = hostConnection.host.name + "_" + str(hostConnection.host.id)
             self.widgets[hostConnection.host.name] = HostTree(self.environmentObject, hostConnection, j)
             self.items.append(hostConnection.host.name)
-            j += 1    
-            
+            j += 1
+
     def get_widget(self, name):
-        """Return the widget for a given file.  Create if necessary."""
+        """Return the widget for a given host."""
         if name == self.environment:
             return self.environment_w
         else:
             return self.widgets[name]       
       
     def next_inorder_from(self, index, name):
-        """Return the TreeWidget following index depth first."""       
+        """Return the TreeWidget following index depth first."""
         if index < len(self.items) - 1:
                 index += 1
-                return self.get_widget(self.items[index])                
+                return self.get_widget(self.items[index])
         else:
             nextEnvironment = get_next_environment(self.environment)
             if nextEnvironment:
@@ -550,37 +558,38 @@ class EnvironmentStore(object):
         """Return the TreeWidget preceeding index depth first."""         
         if index > 0:
             index -= 1
-            return   self.get_widget(self.items[index]) 
+            return self.get_widget(self.items[index])
         else:
             return self.environment_w
 
     def get_first(self):
         """Return the first TreeWidget in the directory."""   
-        if self.environment_w.expanded == True:
+        if self.environment_w.expanded:
             return self.get_widget(self.items[0])
         else:
             return self.environment_w
     
     def get_last(self):
         """Return the last TreeWIdget in the directory."""     
-        if self.environment_w.expanded == True:  
+        if self.environment_w.expanded:
             return self.get_widget(self.items[-1])
         else:
             return self.environment_w
-        
+
+
 class CursesMessage(object):
     palette = [
-        ('body', 'black', 'light gray'), # Normal text
-        ('focus', 'light green', 'black', 'standout'), # Focus
-        ('head', 'yellow', 'dark gray', 'standout'), # Header
-        ('foot', 'light gray', 'dark gray'), # Footer separator
-        ('key', 'light green', 'dark gray', 'underline'), # keys posibles
-        ('title', 'white', 'black', 'bold'), #Footer Tittle
-        ('environmentMark', 'black', 'light gray', 'bold'), # environment
+        ('body', 'black', 'light gray'),  # Normal text
+        ('focus', 'light green', 'black', 'standout'),  # Focus
+        ('head', 'yellow', 'dark gray', 'standout'),  # Header
+        ('foot', 'light gray', 'dark gray'),  # Footer separator
+        ('key', 'light green', 'dark gray', 'underline'),  # keys posibles
+        ('title', 'white', 'black', 'bold'),  # Footer Tittle
+        ('environmentMark', 'black', 'light gray', 'bold'),  # environment
         ('flag', 'dark gray', 'light gray'),
-        ('error', 'dark red', 'light gray'), # Missing Key
-        ('footer_msg', 'yellow', 'dark gray', 'bold'),
-        ]    
+        ('error', 'dark red', 'light gray'),  # Missing Key
+        ('footer_msg', 'yellow', 'dark gray', 'bold'), ]
+
     @staticmethod
     def msgBox(message):
         width = ('relative', 50)
@@ -605,19 +614,21 @@ class CursesMessage(object):
             b = urwid.AttrWrap(b, 'selectable', 'focus')
             l.append(b)
             buttons = urwid.GridFlow(l, 10, 3, 1, 'center')
-            frame.footer = urwid.Pile([ urwid.Divider(),
-            buttons ], focus_item=1)  
+            frame.footer = urwid.Pile([urwid.Divider(), buttons ], focus_item=1)
         loop = urwid.MainLoop(w, CursesMessage.palette)
         try:
             loop.run()
         except DialogExit, e:
             return CursesMessage.on_exit(e.args[0])
+
     @staticmethod
     def on_exit(exitcode):
         return exitcode, ""
+
     @staticmethod
     def button_press(button):
         raise DialogExit(button.exitcode) 
-    
+
+
 class DialogExit(Exception):
     pass

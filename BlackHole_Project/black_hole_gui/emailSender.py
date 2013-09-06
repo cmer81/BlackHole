@@ -1,19 +1,14 @@
-'''
-Created on Oct 24, 2012
-
-@author: Nicolas Rebagliati (nicolas.rebagliati@aenima-x.com.ar)
-'''
 # -*- coding: utf-8 -*-
 import smtplib
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-class EmailSender(object):
-    '''
-    classdocs
-    '''
 
+class EmailSender(object):
+    """
+    Class Docs
+    """
 
     def __init__(self,user,token,sessionID):
         '''
