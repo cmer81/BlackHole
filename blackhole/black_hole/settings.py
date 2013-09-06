@@ -16,9 +16,9 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
+        'NAME': 'blackhole',                      # Or path to database file if using sqlite3.
+        'USER': 'blackhole',                      # Not used with sqlite3.
+        'PASSWORD': 'blackhole',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -106,8 +106,7 @@ ROOT_URLCONF = 'black_hole.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'black_hole.wsgi.application'
 
-TEMPLATE_DIRS = (
-                 os.path.join(os.path.dirname(__file__),'templates'),
+TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -125,7 +124,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'blackhole.black_hole_db',
-    #'django_extensions',
+    'django_extensions',
 )
 
 # A sample logging configuration. The only tangible logging
