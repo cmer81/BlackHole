@@ -6,13 +6,16 @@ BlackHole: Integrated ssh security tool
 
 What is BlackHole?
 is difficult to express in a few words
-It's a solution to get trace users who connect via ssh.
-It was designed for and enviroment with many servers, its not for domestic use.
+It's a solution to trace users who connect to a linux/unix machine with ssh.
+It was designed for an environment with many servers, its not for domestic use.
+For example: When you have to grant access to many environments, like Testing, Production, QA, etc.
+
 
 Basically its a curses ssh client, that can keep trace of the entire ssh session.
 Is divided into two functionalities:
 * User management
-* Loging and statistics
+* Logging and statistics
+* Access Control
 
 Requirements
 ============
@@ -41,7 +44,7 @@ But without losing track of who is who.
 ![Diagram](http://img717.imageshack.us/img717/371/diagramv.jpg)
 
 You define a user for the connection and a private key.
-Then you asign that session configuration to a profile, and then all the users with that profile can login to that host.
+Then you assign that session configuration to a profile, and then all the users with that profile can login to that host.
 But you now who is who, and more. 
 You know what he is doing because BlackHole stores all the session activity to a log file.
 
@@ -74,9 +77,9 @@ Extras
 BlackHole also haves some extra functionalities, that are disabled by default.
 You can send a token, to ensure that the user is who he is saying he is.
 * You can send it by mail
-* You can send it by SMS, but you need a SMSC (this is beacause I work on a Movile Phone Company and i have one)
 
-You can authenticate web users with radius, for this you need to install python-pyrad, if you use this feature I recommend you to also authenticate ssh users with radius.
+You can authenticate web users with radius, for this you need to install python-pyrad,
+if you use this feature I recommend you to also authenticate ssh users with radius.
 
 
 
