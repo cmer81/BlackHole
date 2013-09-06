@@ -15,11 +15,11 @@
     <script type='text/javascript'>
         $.plot($("#graph"),[
         {% for line in data %}
-        	{
-			label: "{{ line.sourceIP }}",
-			data: {{ line.total }}
-			},
-		{% endfor %}
+            {
+            label: "{{ line.sourceIP }}",
+            data: {{ line.total }}
+            },
+        {% endfor %}
    ],
    {
      series: {
@@ -42,12 +42,12 @@
         }
   });
     </script>
-<a class="btn" href="{% url byHost %}">{% trans 'Back' %}</a>
+<a class="btn" href="{% url 'byHost' %}">{% trans 'Back' %}</a>
 {% else %}
 <div class="alert alert-info">
   {% trans 'No data' %}
 </div>
 {% endif %}
 
-    
+
 {% endblock %}
