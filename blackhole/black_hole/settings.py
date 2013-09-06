@@ -7,18 +7,16 @@ os.environ["LC_ALL"] = "en_US.UTF-8"
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
-    ('Nicolas Rebagliati', 'nicolas.rebagliati@aenima-x.com.ar'),
-)
+ADMINS = (('Nicolas Rebagliati', 'nicolas.rebagliati@aenima-x.com.ar'),)
 
 MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'blackhole',                      # Or path to database file if using sqlite3.
-        'USER': 'blackhole',                      # Not used with sqlite3.
-        'PASSWORD': 'blackhole',                  # Not used with sqlite3.
+        'NAME': '',                      # Or path to database file if using sqlite3.
+        'USER': '',                      # Not used with sqlite3.
+        'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -60,7 +58,7 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(os.path.dirname(__file__),'../black_hole_db/static')
+STATIC_ROOT = os.path.join(os.path.dirname(__file__), '../black_hole_db/static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -124,7 +122,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'blackhole.black_hole_db',
-    'django_extensions',
+    #'django_extensions',
 )
 
 # A sample logging configuration. The only tangible logging
