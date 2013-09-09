@@ -99,7 +99,7 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'black_hole.urls'
+ROOT_URLCONF = 'blackhole.black_hole.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'black_hole.wsgi.application'

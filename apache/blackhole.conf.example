@@ -1,7 +1,7 @@
 <VirtualHost *:8080>
     WSGIScriptAlias / /opt/BlackHole/apache/django.wsgi
-    Alias /blackhole/static /opt/BlackHole/black_hole_db/static
-    <Directory "/home/BlackHole/black_hole_db/static">
+    Alias /blackhole/static /opt/BlackHole/blackhole/black_hole_db/static
+    <Directory "/home/BlackHole/blackhole/black_hole_db/static">
         Order allow,deny
         Options Indexes
         Allow from all

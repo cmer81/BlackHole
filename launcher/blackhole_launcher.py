@@ -3,6 +3,7 @@ import warnings
 warnings.simplefilter("ignore")
 import os
 import sys
+sys.path.append('/opt/BlackHole/')
 from blackhole.black_hole_engine import BlackHole
 from blackhole.black_hole_engine.gui import CursesMessage
 

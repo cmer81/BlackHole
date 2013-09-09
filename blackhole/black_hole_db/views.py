@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from django.core.servers.basehttp import FileWrapper
 from django.contrib.auth.decorators import login_required
 from django.template import RequestContext
-from black_hole_db.models import User, Host
+from models import User, Host
 from forms import StatsByUser, FindSessionLogs, StatsByHost
 from models import SessionLog
 from django.db.models import Avg, Max, Min, Count, Sum

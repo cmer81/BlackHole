@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.contrib import admin
-from black_hole_db.models import Host, User, Environment, UserIdentity, HostConnection, Profile, PrivateKey, SessionLog
+from models import Host, User, Environment, UserIdentity, HostConnection, Profile, PrivateKey, SessionLog
 from django.utils.translation import ugettext_lazy as _
 
 
