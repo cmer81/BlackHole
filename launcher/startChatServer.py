@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from black_hole_gui.chatServer import ChatServer
+from blackhole.black_hole_engine.chatServer import ChatServer
 import asyncore
 
 PORT = 5006
