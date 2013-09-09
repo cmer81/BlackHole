@@ -4,6 +4,14 @@ BlackHole: Integrated ssh security tool
 ![main](http://img577.imageshack.us/img577/2091/mainwindowa.png)
 ![web](http://img32.imageshack.us/img32/957/indexgm.png)
 
+
+IMPORTANT: I need to rewrite the manual (the install section), just use the installation script and read what it tells you ti do
+<dl>
+  <dt>IMPORTANT</dt>
+  <dd>I've made some changes.</dd>
+  <dt>I need to rewrite the manual (the install section), just use the installation script and read what it tells you ti do</dt>
+</dl>
+
 What is BlackHole?
 is difficult to express in a few words
 It's a solution to trace users who connect to a linux/unix machine with ssh.
