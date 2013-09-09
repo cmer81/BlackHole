@@ -8,6 +8,9 @@ fi
 PIP=`which pip`
 
 if [ "$PIP" != "" ];then
+    echo IMPORTANT: You will need the python headers to install some of hte dependencies. If you don.t have them, and gcc. Install them first"
+    echo "Press any key...or cancel with control C"
+    read
     BLACKHOLE_PATH="/opt/BackHole"
     export INSTALL="$PIP install --upgrade"
     echo "Installing dependencies..."
