@@ -5,11 +5,10 @@ BlackHole: Integrated ssh security tool
 ![web](http://img32.imageshack.us/img32/957/indexgm.png)
 
 
-IMPORTANT: I need to rewrite the manual (the install section), just use the installation script and read what it tells you ti do
 <dl>
   <dt>IMPORTANT</dt>
-  <dd>I've made some changes.</dd>
-  <dt>I need to rewrite the manual (the install section), just use the installation script and read what it tells you ti do</dt>
+  <dt>I've made some changes.</dd>
+  <dt>I need to rewrite the manual (the install section), just use the installation script and read what it tells you to do</dt>
 </dl>
 
 What is BlackHole?
