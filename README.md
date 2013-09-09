@@ -75,7 +75,7 @@ I recommend to disable scp and sftp in the BlackHole server.
 Installation
 ==============
 
-Use the installation script. It will install all the dependencies, except the parts that you can choose, DB and web server.
+Use the installation script. It will install all the dependencies, except the parts that you can choose DB and web server.
 For those you need to choose.
 I use apache and Mysql, there are apache examples of configuration files inside.
 
