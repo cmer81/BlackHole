@@ -10,7 +10,7 @@ PIP=`which pip`
 
 if [ "$PIP" != "" ]
 then
-    echo "IMPORTANT: You will need the python headers and gcc to install some of hte dependencies. If you don't have them, install it first"
+    echo "IMPORTANT: You will need the python headers and gcc to install some of the dependencies. If you don't have them, install them first"
     echo "ubuntu/debian: build-essential, python-dev"
     echo "Press any key...or cancel with control C"
     read
