@@ -1,20 +1,22 @@
 #!/bin/bash
 
-if [ "`whoami`" != "root" ];then
+if [ "`whoami`" != "root" ]
+then
     echo "Must run as root"
     exit 1
 fi
 
 PIP=`which pip`
 
-if [ "$PIP" != "" ];then
-    echo IMPORTANT: You will need the python headers to install some of hte dependencies. If you don.t have them, and gcc. Install them first"
+if [ "$PIP" != "" ]
+then
+    echo "IMPORTANT: You will need the python headers and gcc to install some of hte dependencies. If you don't have them, install it first"
     echo "ubuntu/debian: build-essential, python-dev"
     echo "Press any key...or cancel with control C"
     read
     BLACKHOLE_PATH="/opt/BackHole"
     export INSTALL="$PIP install --upgrade"
-    echo "Installing dependencies..."
+    echo "Installing dependencies ..."
     $INSTALL django
     $INSTALL paramiko
     $INSTALL urwid
@@ -22,21 +24,19 @@ if [ "$PIP" != "" ];then
     $INSTALL django-qsstats-magic
     $INSTALL python-dateutil
     echo "READ: The installer wont install MySQLdb, because maybe you want to use some other engine. If you want to use Mysql, Install MySQLdb!!"
-
+    echo "Installing app in $BLACKHOLE_PATH ..."
     mkdir $BLACKHOLE_PATH
     groupadd blackhole
     cp -rf apache $BLACKHOLE_PATH
     cp -rf blackhole $BLACKHOLE_PATH
     cp launcher/* $BLACKHOLE_PATH
-
     echo "Ready!! Now you must configure the logs path in $BLACKHOLE_PATH/blackhole.config. Make shure that the group 'blackhole' has write permissions!!!"
-    echo "Now: configure the DB information (db/user/password) in $BLACKHOLE_PATH/blackhole/black_hole/settings.py"
+    echo "Now: configure the DB information [db/user/password] in $BLACKHOLE_PATH/blackhole/black_hole/settings.py"
     echo "Run (to create the tables): $BLACKHOLE_PATH/blackhole/manage.py syncdb"
     echo "Run (the lead the initial configuration: $BLACKHOLE_PATH/blackhole/manage.py initial_setup"
     echo "Configure the web server, the example configuration is in $BLACKHOLE_PATH/apache/. You can use the blackhole.conf.example for it!!"
     echo "Now you are ready to run it, just load your configurations in the web!!"
     echo "REMEMBER to set $BLACKHOLE_PATH/blackhole_launcher.py as the users shell!!"
-
 else
     echo "You need pip in you $PATH"
     exit 1
