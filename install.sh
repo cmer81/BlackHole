@@ -14,7 +14,7 @@ then
     echo "ubuntu/debian: build-essential, python-dev"
     echo "Press any key...or cancel with control C"
     read
-    BLACKHOLE_PATH="/opt/BackHole"
+    BLACKHOLE_PATH="/opt/BlackHole"
     export INSTALL="$PIP install --upgrade"
     echo "Installing dependencies ..."
     $INSTALL django
@@ -30,7 +30,7 @@ then
     cp -rf apache $BLACKHOLE_PATH
     cp -rf blackhole $BLACKHOLE_PATH
     cp launcher/* $BLACKHOLE_PATH
-    echo "Ready!! Now you must configure the logs path in $BLACKHOLE_PATH/blackhole.config. Make shure that the group 'blackhole' has write permissions!!!"
+    echo "Ready!! Now you must configure the logs path in $BLACKHOLE_PATH/blackhole.config (Make shure that the group 'blackhole' has write permissions!!!)"
     echo "Now: configure the DB information [db/user/password] in $BLACKHOLE_PATH/blackhole/black_hole/settings.py"
     echo "Run (to create the tables): $BLACKHOLE_PATH/blackhole/manage.py syncdb"
     echo "Run (the lead the initial configuration: $BLACKHOLE_PATH/blackhole/manage.py initial_setup"

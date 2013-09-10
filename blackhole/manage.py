@@ -2,8 +2,9 @@
 import os
 import sys
 
+sys.path.append("/opt/BlackHole")
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "black_hole.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "blackhole.black_hole.settings")
 
     from django.core.management import execute_from_command_line
 
