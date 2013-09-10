@@ -76,12 +76,13 @@ Installation
 ==============
 
 Install:
+```
 apt-get install git build-essential python-dev mysql-server python-pip
 If you want to use Mysql and Apache like me, install:apt-get install python-mysqldb libapache2-mod-wsgi
 git clone https://github.com/aenima-x/BlackHole.git
 cd BlackHole
 ./install.sh
-
+```
 And follow the steps...
 
 
