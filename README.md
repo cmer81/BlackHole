@@ -88,7 +88,7 @@ And follow the steps...
 Extras
 ======
 
-BlackHole also haves some extra functionalities, that are disabled by default.
+BlackHole also have some extra functionalities, that are disabled by default.
 You can send a token, to ensure that the user is who he is saying he is.
 * You can send it by mail
 
