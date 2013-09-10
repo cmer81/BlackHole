@@ -75,9 +75,15 @@ I recommend to disable scp and sftp in the BlackHole server.
 Installation
 ==============
 
-Use the installation script. It will install all the dependencies, except the parts that you can choose DB and web server.
-For those you need to choose.
-I use apache and Mysql, there are apache examples of configuration files inside.
+Install:
+apt-get install git build-essential python-dev mysql-server python-pip
+If you want to use Mysql and Apache like me, install:apt-get install python-mysqldb libapache2-mod-wsgi
+git clone https://github.com/aenima-x/BlackHole.git
+cd BlackHole
+./install.sh
+
+And follow the steps...
+
 
 Extras
 ======
