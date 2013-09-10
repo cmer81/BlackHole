@@ -41,6 +41,6 @@ then
     echo "7. That's all. Enter to the web (http://x.x.x.x:8080/blackhole/index/) and create all the configurations!!"
 	echo "8. Remember to set $BLACKHOLE_PATH/blackhole_launcher.py as the shell for all the users. And set 'blackhole' as their group"
 else
-    echo "You need pip in you $PATH"
+    echo "You need pip in your $PATH"
     exit 1
 fi
