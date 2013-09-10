@@ -32,7 +32,7 @@ then
     echo "Creating group ..."
     groupadd blackhole
 	echo "Next steps ..."
-	echo "1. Create the database (name: blackhole) and a user (whatever you like)."
+	echo "1. Create the database (name: blackhole) and a user/password (whatever you like)."
 	echo "2. Add the user/password you've created to $BLACKHOLE_PATH/blackhole/black_hole/settings.py in the DATABASES section"
 	echo "3. Create the tables with: $BLACKHOLE_PATH/blackhole/manage.py syncdb"
 	echo "4. Add some initial configuration with: $BLACKHOLE_PATH/blackhole/manage.py initial_setup"
