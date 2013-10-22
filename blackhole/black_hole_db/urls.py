@@ -10,7 +10,7 @@ urlpatterns = patterns('',
     # Uncomment the admin/doc line below to enable admin documentation:
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^login/$', django_views.login),
-    url(r'^logout/$',django_views.logout,{'next_page': '/backhole/index/'}),
+    url(r'^logout/$',django_views.logout,{'next_page': '/blackhole/index/'}),
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 #    url(r'^stats/$', 'black_hole_db.views.stats', name='stats'),
