@@ -3,10 +3,10 @@ import datetime
 import time
 import urwid
 import blackhole
-from blackHoleExceptions import BlackHoleMissing
-from secureShellClient import SecureShellClient
-from chatGUI import chatGUI
-from loger import Loger
+from .blackHoleExceptions import BlackHoleMissing
+from .secureShellClient import SecureShellClient
+from .chatGUI import chatGUI
+from .loger import Loger
 
 ################ Global Functions
 # global cache of directory information
@@ -174,7 +174,7 @@ class BlackHoleBrowser(object):
     def validate(self, widget):
         if not widget.error:
             if BlackHoleBrowser.blackHole.data.user.timeEnabled:
-                    now = datetime.now().time().replace(second=0)
+                    now = datetime.datetime.now().time().replace(second=0)
                     if not (BlackHoleBrowser.blackHole.data.user.timeFrom < now < BlackHoleBrowser.blackHole.data.user.timeTo):
                         widget.setError(_("Login is not allowed"))
                         return
