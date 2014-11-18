@@ -3,6 +3,7 @@ import os
 
 os.environ["LANG"] = "en_US.UTF-8"
 os.environ["LC_ALL"] = "en_US.UTF-8"
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

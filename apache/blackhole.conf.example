@@ -1,13 +1,15 @@
 <VirtualHost *:8080>
     WSGIScriptAlias / /opt/BlackHole/apache/django.wsgi
     Alias /blackhole/static /opt/BlackHole/blackhole/black_hole_db/static
-    <Directory "/home/BlackHole/blackhole/black_hole_db/static">
+    <Directory "/opt/BlackHole/blackhole/black_hole_db/static">
         Order allow,deny
         Options Indexes
         Allow from all
+        Require all granted
         IndexOptions FancyIndexing
     </Directory>
     <Directory "/opt/BlackHole/apache/">
         Allow from all
+        Require all granted
     </Directory>
 </VirtualHost>
